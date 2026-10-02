@@ -1,0 +1,24 @@
+# Este archivo tiene que llamarse EXACTAMENTE "application.yml" y vivir en la
+# RAIZ del repo cine-properties. El Config Server se lo sirve a TODOS los
+# microservicios, sin importar su spring.application.name.
+#
+# IMPORTANTE: el valor real del JWT_SECRET NO va en este archivo ni se sube a
+# git. ${JWT_SECRET} es un placeholder: Spring lo completa en runtime con una
+# variable de entorno del proceso. Si no existe, el servicio falla al arrancar
+# (a proposito: mejor eso que arrancar con un secret vacio).
+# Solo lo usan Auth (firma y valida) y Gateway (valida). Los demas lo ignoran.
+# Generar uno:  openssl rand -base64 32
+
+jwt:
+  secret: ${JWT_SECRET}
+  # Access token: dura poco a proposito (no se puede revocar). 15 minutos.
+  expiration-ms: 900000
+  # Refresh token: 7 dias, pero SI se puede revocar (vive en la base de Auth).
+  refresh-expiration-ms: 604800000
+
+# --- Clave secreta de red Gateway -> microservicios -------------------
+# El Gateway la manda en la cabecera X-Gateway-Secret y cada microservicio
+# rechaza con 403 lo que no la traiga (asi nadie se saltea el Gateway).
+# Cambiar este valor antes de usarlo en serio.
+gateway:
+  internal-secret: "CineClaveInternaDeRed2026!"

@@ -1,0 +1,46 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: auth
+              uri: lb://auth
+              predicates:
+                - Path=/auth/**
+              filters:
+                - SetRequestHeader=X-Gateway-Secret, ${gateway.internal-secret}
+            - id: modulo-productos
+              uri: lb://modulo-productos
+              predicates:
+                - Path=/productos/**
+              filters:
+                - SetRequestHeader=X-Gateway-Secret, ${gateway.internal-secret}
+            - id: modulo-salas
+              uri: lb://modulo-salas
+              predicates:
+                - Path=/salas/**
+              filters:
+                - SetRequestHeader=X-Gateway-Secret, ${gateway.internal-secret}
+            - id: modulo-ventas
+              uri: lb://modulo-ventas
+              predicates:
+                - Path=/ventas/**
+              filters:
+                - SetRequestHeader=X-Gateway-Secret, ${gateway.internal-secret}
+            - id: modulo-gmail
+              uri: lb://modulo-gmail
+              predicates:
+                - Path=/gmail/**
+              filters:
+                - SetRequestHeader=X-Gateway-Secret, ${gateway.internal-secret}
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    lease-renewal-interval-in-seconds: 10
