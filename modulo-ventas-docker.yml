@@ -20,6 +20,22 @@ spring:
       path: /h2-console
       settings:
         web-allow-others: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+# Sin esto, Ventas no puede generar preferencias de pago reales (Mercado
+# Pago responde 401) pero el resto de la compra (crear venta, validar
+# butacas/productos, publicar eventos) funciona igual. Completar con un
+# access token de prueba (sandbox) de una cuenta de Mercado Pago del equipo.
+mercadopago:
+  access-token: ""
+  notification-url: "http://localhost:8081/ventas/webhook/mercadopago"
+
+openapi:
+  gateway-url: "http://localhost:8081"
 
 management:
   endpoints:

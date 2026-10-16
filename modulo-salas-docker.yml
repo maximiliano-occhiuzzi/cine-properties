@@ -2,24 +2,24 @@ server:
   port: 8083
 
 spring:
+  # Perfil "docker": MySQL real, tal cual lo armo mi compañera.
+  # Requiere un contenedor MySQL accesible con hostname "mysqldb" (agregarlo
+  # al docker-compose.yml del equipo si todavia no esta, con esa misma red).
   datasource:
-    url: jdbc:h2:mem:salasdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: ""
+    url: jdbc:mysql://mysqldb:3306/db_salas?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: rootpassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
 
 management:
   endpoints:

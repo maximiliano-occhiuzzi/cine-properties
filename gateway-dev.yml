@@ -26,6 +26,18 @@ spring:
                 - Path=/salas/**
               filters:
                 - SetRequestHeader=X-Gateway-Secret, ${gateway.internal-secret}
+            - id: modulo-salas-funciones
+              uri: lb://modulo-salas
+              predicates:
+                - Path=/funciones/**
+              filters:
+                - SetRequestHeader=X-Gateway-Secret, ${gateway.internal-secret}
+            - id: modulo-salas-butacas
+              uri: lb://modulo-salas
+              predicates:
+                - Path=/butacas/**
+              filters:
+                - SetRequestHeader=X-Gateway-Secret, ${gateway.internal-secret}
             - id: modulo-ventas
               uri: lb://modulo-ventas
               predicates:
@@ -36,6 +48,12 @@ spring:
               uri: lb://modulo-gmail
               predicates:
                 - Path=/gmail/**
+              filters:
+                - SetRequestHeader=X-Gateway-Secret, ${gateway.internal-secret}
+            - id: modulo-factura
+              uri: lb://modulo-factura
+              predicates:
+                - Path=/facturas/**
               filters:
                 - SetRequestHeader=X-Gateway-Secret, ${gateway.internal-secret}
 eureka:
