@@ -41,9 +41,16 @@ spring:
     password: guest
     listener:
       simple:
-        # Si el listener tira una excepcion no esperada, no se reencola en loop
-        # infinito. Los fallos de envio de mail no lanzan: se guardan como ERROR.
+        # Si el listener falla, no se reencola en loop infinito.
         default-requeue-rejected: false
+        # Reintentos con backoff exponencial (1s, 2s, 4s) antes de mandar el
+        # mensaje a la DLQ (venta.eventos.dlq).
+        retry:
+          enabled: true
+          max-retries: 3
+          initial-interval: 1s
+          multiplier: 2
+          max-interval: 10s
 
 management:
   endpoints:
