@@ -34,6 +34,16 @@ spring:
           auth: true
           starttls:
             enable: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        # Si el listener tira una excepcion no esperada, no se reencola en loop
+        # infinito. Los fallos de envio de mail no lanzan: se guardan como ERROR.
+        default-requeue-rejected: false
 
 management:
   endpoints:
