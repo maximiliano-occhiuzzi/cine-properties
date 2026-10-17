@@ -34,6 +34,11 @@ spring:
           auth: true
           starttls:
             enable: true
+          # Corta la conexion al SMTP si se cuelga, en vez de dejar el hilo del
+          # listener trabado para siempre (pasado el tiempo pasa a ERROR).
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
   rabbitmq:
     host: localhost
     port: 5672
