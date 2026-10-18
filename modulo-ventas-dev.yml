@@ -40,6 +40,13 @@ mercadopago:
   access-token: "APP_USR-584951954015672-101720-bd5f0e821f9371025d695a2d2dee2517-3774264210"
   notification-url: "https://juiciness-photo-senior.ngrok-free.dev/ventas/webhook/mercadopago"
 
+# A donde redirige Mercado Pago el NAVEGADOR del comprador despues de pagar
+# (botones "Volver al sitio" / auto_return). A diferencia de notification-url
+# esto no lo llama Mercado Pago por su cuenta, lo sigue el navegador del
+# usuario, asi que localhost anda perfecto: no hace falta ngrok para esto.
+app:
+  frontend-url: "http://localhost:4200"
+
 openapi:
   gateway-url: "http://localhost:8081"
 
