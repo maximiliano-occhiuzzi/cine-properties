@@ -60,6 +60,10 @@ eureka:
     lease-renewal-interval-in-seconds: 10
 
 feign:
+  # El cliente HTTP por defecto de Feign (HttpURLConnection) no soporta PATCH
+  # y hacia fallar en silencio el ajuste de stock en Productos. OkHttp si.
+  okhttp:
+    enabled: true
   client:
     config:
       default:
