@@ -30,9 +30,15 @@ spring:
 # Developers, asociado al usuario de prueba vendedor (TESTUSER8329823221133887088).
 # No mueve plata real. NO commitear este archivo con el token real a un repo
 # publico — esto queda solo en la maquina local de quien lo corre.
+#
+# notification-url tiene que ser una URL PUBLICA (Mercado Pago la llama desde
+# afuera para avisar que un pago se acredito) — localhost no sirve porque sus
+# servidores no pueden llegar a tu maquina. Mientras se prueba localmente se
+# usa un tunel de ngrok (`ngrok http 8081`); esa URL cambia cada vez que se
+# reinicia ngrok (plan free), asi que hay que actualizarla aca cada vez.
 mercadopago:
   access-token: "APP_USR-584951954015672-101720-bd5f0e821f9371025d695a2d2dee2517-3774264210"
-  notification-url: "http://localhost:8081/ventas/webhook/mercadopago"
+  notification-url: "https://juiciness-photo-senior.ngrok-free.dev/ventas/webhook/mercadopago"
 
 openapi:
   gateway-url: "http://localhost:8081"
