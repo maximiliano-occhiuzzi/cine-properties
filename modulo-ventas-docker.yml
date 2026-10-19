@@ -3,36 +3,35 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:ventasdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: ""
+    url: jdbc:mysql://ventas-db:3306/ventas_database?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ventas_user
+    password: ${VENTAS_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true
   rabbitmq:
     host: rabbitmq
     port: 5672
-    username: guest
-    password: guest
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
 
-# Access token de PRUEBA (sandbox) de la app "cine-tp" en Mercado Pago
-# Developers, asociado al usuario de prueba vendedor (TESTUSER8329823221133887088).
-# No mueve plata real. NO commitear este archivo con el token real a un repo
-# publico — esto queda solo en la maquina local de quien lo corre.
+# Antes el access token de Mercado Pago (sandbox) estaba commiteado en texto
+# plano en este archivo. Se externaliza igual que JWT_SECRET/GATEWAY_INTERNAL_SECRET:
+# tiene que llegar como variable de entorno del proceso de Ventas.
+#
+# notification-url: a donde le pega MERCADO PAGO (un servidor externo, no tu
+# PC) para avisar que un pago se acredito. "http://localhost:8081/..." NO
+# sirve en Docker -Mercado Pago no puede resolver "localhost" tuyo- hace
+# falta una URL publica real (ngrok, ver docker-compose.yml) apuntando al
+# gateway. El default de aca abajo es el mismo de siempre (dev local sin
+# Docker), asi el servicio igual arranca sin ngrok: el webhook en si no va a
+# funcionar, pero el resto del sistema (compra, historial, etc.) si.
 mercadopago:
-  access-token: "APP_USR-584951954015672-101720-bd5f0e821f9371025d695a2d2dee2517-3774264210"
-  notification-url: "http://localhost:8081/ventas/webhook/mercadopago"
+  access-token: ${MERCADOPAGO_ACCESS_TOKEN}
+  notification-url: ${MERCADOPAGO_NOTIFICATION_URL:http://localhost:8081/ventas/webhook/mercadopago}
 
 # A donde vuelve el navegador del comprador despues de pagar (no es una
 # llamada de Mercado Pago al backend, asi que localhost anda bien).

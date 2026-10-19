@@ -19,6 +19,11 @@ jwt:
 # --- Clave secreta de red Gateway -> microservicios -------------------
 # El Gateway la manda en la cabecera X-Gateway-Secret y cada microservicio
 # rechaza con 403 lo que no la traiga (asi nadie se saltea el Gateway).
-# Cambiar este valor antes de usarlo en serio.
+# ANTES estaba como texto plano aca mismo -si este repo es publico, cualquiera
+# que lo vea puede armar requests que pasan el filtro. Ahora es un placeholder:
+# TODOS los microservicios que la validan (Auth, Productos, Salas, Ventas,
+# Gmail, Factura) y el Gateway que la manda necesitan GATEWAY_INTERNAL_SECRET
+# como variable de entorno de su propio proceso, no solo Auth/Gateway como el
+# JWT_SECRET de arriba. Generar uno:  openssl rand -base64 32
 gateway:
-  internal-secret: "CineClaveInternaDeRed2026!"
+  internal-secret: ${GATEWAY_INTERNAL_SECRET}
